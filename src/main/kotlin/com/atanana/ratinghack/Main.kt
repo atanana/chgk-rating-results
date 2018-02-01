@@ -17,7 +17,3 @@ fun Application.module() {
         }
     }
 }
-
-fun main(args: Array<String>) {
-    embeddedServer(Netty, 8080, watchPaths = listOf("BlogAppKt"), module = Application::module).start()
-}
