@@ -19,12 +19,16 @@ fun Application.module() {
         get("/tournament/{n}") {
             val tournamentId = call.parameters["n"]!!.toInt()
             val data = Connector.tournamentTeamsData(tournamentId)
-            val teams = Klaxon().parseArray<RawTournamentTeam>(data) ?: emptyList()
+            val klaxon = Klaxon()
+            val teams = klaxon.parseArray<RawTournamentTeam>(data) ?: emptyList()
             val res = teams.map { team ->
                 async {
-                    Connector.teamsResultsData(team.teamId.toInt())
+                    Connector.teamInfo(team.teamId.toInt())
                 }
-            }.map { it.await() }
+            }
+                    .map { it.await() }
+                    .map { klaxon.parseArray<RawTeamInfo>(it)?.firstOrNull() }
+                    .map { it?.toInfo() }
             call.respondText(res.toString(), ContentType.Text.Html)
         }
     }
