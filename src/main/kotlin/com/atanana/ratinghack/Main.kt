@@ -15,5 +15,10 @@ fun Application.module() {
         get("/") {
             call.respondText("My Example Blog2", ContentType.Text.Html)
         }
+
+        get("/tournament/{n}") {
+            val tournamentId = call.parameters["n"]!!.toInt()
+            call.respondText("Tournament $tournamentId", ContentType.Text.Html)
+        }
     }
 }
