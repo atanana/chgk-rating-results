@@ -8,7 +8,7 @@ object TeamResultsExtractor {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val parser = CSVFormat.RFC4180.withDelimiter(';')
 
-    fun String.toPlace(): Float = replace(',', '.').toFloat()
+    private fun String.toPlace(): Float = replace(',', '.').toFloat()
 
     fun getTeamResult(data: String, tournamentId: Int): TeamResult? {
         try {
