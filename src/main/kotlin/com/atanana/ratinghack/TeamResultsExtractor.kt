@@ -8,6 +8,8 @@ object TeamResultsExtractor {
     private val logger = LoggerFactory.getLogger(javaClass)
     private val parser = CSVFormat.RFC4180.withDelimiter(';')
 
+    fun String.toPlace(): Float = replace(',', '.').toFloat()
+
     fun getTeamResult(data: String, tournamentId: Int): TeamResult? {
         try {
             val tournamentIdStr = tournamentId.toString()
@@ -16,8 +18,8 @@ object TeamResultsExtractor {
             return row?.let {
                 TeamResult(
                         rating = row[6].toInt(),
-                        predictedPlace = row[7].toFloat(),
-                        place = row[8].toFloat(),
+                        predictedPlace = row[7].toPlace(),
+                        place = row[8].toPlace(),
                         bonus = row[10].toInt(),
                         realBonus = row[11].toInt(),
                         points = row[12].toInt()
