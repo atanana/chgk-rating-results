@@ -18,7 +18,7 @@ fun Application.module() {
 
         get("/tournament/{n}") {
             val tournamentId = call.parameters["n"]!!.toInt()
-            call.respondText("Tournament $tournamentId", ContentType.Text.Html)
+            call.respondText(Connector.tournamentTeamsPage(tournamentId), ContentType.Text.Html)
         }
     }
 }
