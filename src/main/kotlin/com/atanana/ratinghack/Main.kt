@@ -6,6 +6,7 @@ import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.experimental.async
 
 fun Application.module() {
     install(DefaultHeaders)
@@ -17,9 +18,14 @@ fun Application.module() {
 
         get("/tournament/{n}") {
             val tournamentId = call.parameters["n"]!!.toInt()
-            val data = Connector.tournamentTeamsPage(tournamentId)
-            val teams = Klaxon().parseArray<RawTournamentTeam>(data)
-            call.respondText(teams.toString(), ContentType.Text.Html)
+            val data = Connector.tournamentTeamsData(tournamentId)
+            val teams = Klaxon().parseArray<RawTournamentTeam>(data) ?: emptyList()
+            val res = teams.map { team ->
+                async {
+                    Connector.teamsResultsData(team.teamId.toInt())
+                }
+            }.map { it.await() }
+            call.respondText(res.toString(), ContentType.Text.Html)
         }
     }
 }
