@@ -18,3 +18,12 @@ data class RawTeamInfo(
 }
 
 data class TeamInfo(val id: Int, val name: String, val city: String)
+
+data class TeamResult(
+        val rating: Int,
+        val predictedPlace: Float,
+        val place: Float,
+        val bonus: Int,
+        val realBonus: Int,
+        val points: Int
+)
