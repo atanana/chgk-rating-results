@@ -1,6 +1,7 @@
 package com.atanana.ratinghack
 
 import com.beust.klaxon.Json
+import com.beust.klaxon.json
 
 data class RawTournamentTeam(
         @Json(name = "idteam")
@@ -27,3 +28,20 @@ data class TeamResult(
         val realBonus: Int,
         val points: Int
 )
+
+data class TeamData(val teamInfo: TeamInfo, val teamResult: TeamResult) {
+    fun toJson() =
+            json {
+                obj(
+                        "id" to teamInfo.id,
+                        "name" to teamInfo.name,
+                        "city" to teamInfo.city,
+                        "rating" to teamResult.rating,
+                        "predictedPlace" to teamResult.predictedPlace,
+                        "place" to teamResult.place,
+                        "bonus" to teamResult.bonus,
+                        "realBonus" to teamResult.realBonus,
+                        "points" to teamResult.points
+                )
+            }
+}

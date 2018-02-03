@@ -1,5 +1,6 @@
 package com.atanana.ratinghack
 
+import com.beust.klaxon.JsonArray
 import com.beust.klaxon.Klaxon
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -27,12 +28,12 @@ fun Application.module() {
             val teams = klaxon.parseArray<RawTournamentTeam>(data) ?: emptyList()
             val res = teams.map { team ->
                 async {
-                    Connector.teamsResultsData(team.teamId.toInt())
+                    TeamDataProvider.getTeamData(team.teamId.toInt(), tournamentId)
                 }
             }
-                    .map { it.await() }
-                    .map { TeamResultsExtractor.getTeamResult(it, tournamentId) }
-            call.respondText(res.toString(), ContentType.Text.Html)
+                    .mapNotNull { it.await() }
+                    .map { it.toJson() }
+            call.respondText(JsonArray(res).toJsonString(), ContentType.Application.Json)
         }
     }
 }
