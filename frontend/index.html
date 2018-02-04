@@ -8,19 +8,47 @@
 </head>
 <body>
 <section class="section">
-    <div class="container">
-        <div class="box">
-            <div class="field has-addons">
-                <div class="control">
-                    <input type="number" class="input" placeholder="Id турнира"/>
-                </div>
-                <div class="control">
-                    <a id="get-results" class="button is-info" href="#">
-                        Получить результаты!
-                    </a>
-                </div>
+    <div class="container is-fluid">
+        <div class="field has-addons">
+            <div class="control">
+                <input id="tournament-id" type="number" class="input" placeholder="Id турнира"/>
+            </div>
+            <div class="control">
+                <a id="get-results" class="button is-info" href="#">
+                    Получить результаты!
+                </a>
             </div>
         </div>
+
+        <table id="results-table" class="table is-bordered is-striped is-hoverable is-fullwidth is-hidden">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Название</th>
+                <th>Город</th>
+                <th>Рейтинг</th>
+                <th>Прогнозируемое место</th>
+                <th>Место</th>
+                <th>Турнирный бонус</th>
+                <th>Бонус</th>
+                <th>Взято</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>Id</th>
+                <th>Название</th>
+                <th>Город</th>
+                <th>Рейтинг</th>
+                <th>Прогнозируемое место</th>
+                <th>Место</th>
+                <th>Турнирный бонус</th>
+                <th>Бонус</th>
+                <th>Взято</th>
+            </tr>
+            </tfoot>
+            <tbody></tbody>
+        </table>
     </div>
 </section>
 <script src="./index.js"></script>
