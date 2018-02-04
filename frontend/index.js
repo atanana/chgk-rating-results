@@ -1,14 +1,16 @@
 import axios from 'axios';
-import classes from './main.css';
 
 const tournamentInput = document.getElementById('tournament-id');
 const getResultsBtn = document.getElementById('get-results');
 const resultsTable = document.getElementById('results-table');
+const errorNotification = document.getElementById('error-notification');
 
 getResultsBtn.onclick = () => {
     getResultsBtn.classList.add('is-loading');
+    errorNotification.classList.add('is-hidden');
     axios.get('/tournament/' + tournamentInput.value)
         .then((response) => processData(response.data))
+        .catch(() => errorNotification.classList.remove('is-hidden'))
         .finally(() => getResultsBtn.classList.remove('is-loading'));
 };
 
