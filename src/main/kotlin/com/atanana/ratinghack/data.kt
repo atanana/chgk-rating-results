@@ -2,6 +2,7 @@ package com.atanana.ratinghack
 
 import com.beust.klaxon.Json
 import com.beust.klaxon.json
+import java.time.LocalDateTime
 
 data class RawTournamentTeam(
         @Json(name = "idteam")
@@ -27,6 +28,18 @@ data class TeamResult(
         val bonus: Int,
         val realBonus: Int,
         val points: Int
+)
+
+data class RawTournamentData(
+        @Json("idtournament")
+        val id: String,
+        val name: String,
+        @TournamentDate
+        @Json("date_start")
+        val start: LocalDateTime,
+        @TournamentDate
+        @Json("date_end")
+        val end: LocalDateTime
 )
 
 data class TeamData(val teamInfo: TeamInfo, val teamResult: TeamResult) {

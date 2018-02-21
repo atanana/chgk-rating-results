@@ -22,4 +22,9 @@ object Connector {
         val url = "${SITE_ADDRESS}api/teams/$teamId.json"
         return URL(url).readText()
     }
+
+    fun tournamentsPage(page: Int): String {
+        val url = "${SITE_ADDRESS}api/tournaments.json?page=$page"
+        return URL(url).readText()
+    }
 }
