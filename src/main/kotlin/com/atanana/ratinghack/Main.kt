@@ -23,6 +23,11 @@ fun Application.module() {
             call.respondText(info, ContentType.Application.Json)
         }
 
+        get("/test") {
+            val tournaments = TournamentsDataProvider.getTournaments()
+            call.respondText { "test" }
+        }
+
         static {
             defaultResource("index.html", "web")
             resources("web")

@@ -1,19 +1,15 @@
 package com.atanana.ratinghack
 
-import com.beust.klaxon.Converter
-import com.beust.klaxon.JsonValue
+import com.beust.klaxon.JsonObject
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class LocalDatetimeHolder : Converter<LocalDateTime> {
-    companion object {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    }
+private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-    override fun fromJson(jv: JsonValue): LocalDateTime = LocalDateTime.parse(jv.string!!, formatter)
-
-    override fun toJson(value: LocalDateTime): String? = value.format(formatter)
-}
-
-@Target(AnnotationTarget.FIELD)
-annotation class TournamentDate
+fun JsonObject.toTournamentData(): TournamentData =
+        TournamentData(
+                string("idtournament")!!.toInt(),
+                string("name")!!,
+                LocalDateTime.parse(string("date_start"), formatter),
+                LocalDateTime.parse(string("date_end"), formatter)
+        )

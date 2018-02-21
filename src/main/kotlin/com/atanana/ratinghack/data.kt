@@ -30,15 +30,10 @@ data class TeamResult(
         val points: Int
 )
 
-data class RawTournamentData(
-        @Json("idtournament")
-        val id: String,
+data class TournamentData(
+        val id: Int,
         val name: String,
-        @TournamentDate
-        @Json("date_start")
         val start: LocalDateTime,
-        @TournamentDate
-        @Json("date_end")
         val end: LocalDateTime
 )
 

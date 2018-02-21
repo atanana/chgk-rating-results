@@ -2,7 +2,6 @@ package com.atanana.ratinghack
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Klaxon
 import com.beust.klaxon.Parser
 import java.time.LocalDate
 import java.util.concurrent.locks.ReentrantLock
@@ -13,15 +12,13 @@ const val START_TOURNAMENTS_PAGE = 5
 object TournamentsDataProvider {
     private val lock = ReentrantLock()
 
-    private val klaxon = Klaxon().fieldConverter(TournamentDate::class, LocalDatetimeHolder())
-
     private val parser = Parser()
 
-    private var cache = listOf<RawTournamentData>()
+    private var cache = listOf<TournamentData>()
 
     private var cacheTimestamp: LocalDate? = null
 
-    fun getTournaments(): List<RawTournamentData> {
+    fun getTournaments(): List<TournamentData> {
         lock.withLock {
             return if (LocalDate.now() == cacheTimestamp) {
                 cache
@@ -31,8 +28,8 @@ object TournamentsDataProvider {
         }
     }
 
-    private fun getTournamentsFromServer(): ArrayList<RawTournamentData> {
-        val result = arrayListOf<RawTournamentData>()
+    private fun getTournamentsFromServer(): ArrayList<TournamentData> {
+        val result = arrayListOf<TournamentData>()
         var lastAddedTournamentsCount: Int
         var page = START_TOURNAMENTS_PAGE
         do {
@@ -46,8 +43,10 @@ object TournamentsDataProvider {
         return result
     }
 
-    private fun parseData(data: String): List<RawTournamentData> {
-        val items = (parser.parse(StringBuilder(data)) as JsonObject)["items"] as JsonArray<*>
-        return klaxon.parseArray(items.toJsonString()) ?: emptyList()
+    private fun parseData(data: String): List<TournamentData> {
+        return ((parser.parse(StringBuilder(data)) as JsonObject)["items"] as JsonArray<*>)
+                .mapChildren { it.toTournamentData() }
+                .filterNotNull()
+                .toList()
     }
 }
