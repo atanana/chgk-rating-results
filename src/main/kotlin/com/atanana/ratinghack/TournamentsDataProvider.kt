@@ -23,6 +23,7 @@ object TournamentsDataProvider {
             return if (LocalDate.now() == cacheTimestamp) {
                 cache
             } else {
+                cacheTimestamp = LocalDate.now()
                 getTournamentsFromServer()
             }
         }
