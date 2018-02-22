@@ -12,7 +12,6 @@ import io.ktor.http.ContentType
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
-import java.time.LocalDateTime
 
 fun Application.module() {
     install(DefaultHeaders)
@@ -25,10 +24,8 @@ fun Application.module() {
         }
 
         get("/test") {
-            val now = LocalDateTime.now()
-            val tournaments = TournamentsDataProvider.getTournaments()
-                    .filter { it.start.isBefore(now) && it.end.isAfter(now) }
-            call.respondText { "test" }
+            val json = InterestingTournamentsProvider.getInterestingTournamentsJson()
+            call.respondText(json.toJsonString(), ContentType.Application.Json)
         }
 
         static {
