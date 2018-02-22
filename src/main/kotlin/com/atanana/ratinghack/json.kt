@@ -11,7 +11,8 @@ fun JsonObject.toTournamentData(): TournamentData =
                 string("idtournament")!!.toInt(),
                 string("name")!!,
                 LocalDateTime.parse(string("date_start"), formatter),
-                LocalDateTime.parse(string("date_end"), formatter)
+                LocalDateTime.parse(string("date_end"), formatter),
+                string("type_name")!!
         )
 
 fun JsonObject.toTeamInfo(): TeamInfo =

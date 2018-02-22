@@ -24,7 +24,8 @@ data class TournamentData(
         val id: Int,
         val name: String,
         val start: LocalDateTime,
-        val end: LocalDateTime
+        val end: LocalDateTime,
+        val type: String
 )
 
 data class TeamData(val teamInfo: TeamInfo, val teamResult: TeamResult) {
