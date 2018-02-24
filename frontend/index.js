@@ -27,7 +27,7 @@ function makeTournamentsList() {
     const tournamentsData = JSON.parse(jsonData);
     if (tournamentsData.length) {
         tournamentLinksContainer.classList.remove('is-hidden');
-        tournamentLinksContainer.innerHTML = tournamentsData.map(makeTournamentLink).join('<br/>');
+        tournamentLinksContainer.querySelector('div').innerHTML = tournamentsData.map(makeTournamentLink).join('<br/>');
         tournamentLinksContainer.onclick = e => {
             const tournamentId = e.target.dataset.tournamentId;
             if (tournamentId && !isLoading) {
