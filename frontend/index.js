@@ -5,14 +5,19 @@ const getResultsBtn = document.getElementById('get-results');
 const resultsTable = document.getElementById('results-table');
 const errorNotification = document.getElementById('error-notification');
 const tournamentLinksContainer = document.getElementById('tournament-links-container');
+let isLoading = false;
 
 getResultsBtn.onclick = () => {
     getResultsBtn.classList.add('is-loading');
     errorNotification.classList.add('is-hidden');
+    isLoading = true;
     axios.get('/tournament/' + tournamentInput.value)
         .then((response) => processData(response.data))
         .catch(() => errorNotification.classList.remove('is-hidden'))
-        .finally(() => getResultsBtn.classList.remove('is-loading'));
+        .finally(() => {
+            isLoading = false;
+            getResultsBtn.classList.remove('is-loading');
+        });
 };
 
 makeTournamentsList();
@@ -22,12 +27,18 @@ function makeTournamentsList() {
     const tournamentsData = JSON.parse(jsonData);
     if (tournamentsData.length) {
         tournamentLinksContainer.classList.remove('is-hidden');
-        tournamentLinksContainer.innerHTML = tournamentsData.map(makeTournamentLink).join('<br/>')
+        tournamentLinksContainer.innerHTML = tournamentsData.map(makeTournamentLink).join('<br/>');
+        tournamentLinksContainer.onclick = e => {
+            const tournamentId = e.target.dataset.tournamentId;
+            if (tournamentId && !isLoading) {
+                tournamentInput.value = tournamentId;
+            }
+        }
     }
 }
 
 function makeTournamentLink(tournament) {
-    return `<a href="#" data-tournament-id="${tournament.id}">${tournament.name}</a>`;
+    return `<a href="#" data-tournament-id="${tournament.id}">${tournament.id} ${tournament.name}</a>`;
 }
 
 function processData(data) {
