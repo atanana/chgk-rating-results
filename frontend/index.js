@@ -4,6 +4,7 @@ const tournamentInput = document.getElementById('tournament-id');
 const getResultsBtn = document.getElementById('get-results');
 const resultsTable = document.getElementById('results-table');
 const errorNotification = document.getElementById('error-notification');
+const tournamentLinksContainer = document.getElementById('tournament-links-container');
 
 getResultsBtn.onclick = () => {
     getResultsBtn.classList.add('is-loading');
@@ -13,6 +14,21 @@ getResultsBtn.onclick = () => {
         .catch(() => errorNotification.classList.remove('is-hidden'))
         .finally(() => getResultsBtn.classList.remove('is-loading'));
 };
+
+makeTournamentsList();
+
+function makeTournamentsList() {
+    const jsonData = document.getElementById('tournaments').textContent;
+    const tournamentsData = JSON.parse(jsonData);
+    if (tournamentsData.length) {
+        tournamentLinksContainer.classList.remove('is-hidden');
+        tournamentLinksContainer.innerHTML = tournamentsData.map(makeTournamentLink).join('<br/>')
+    }
+}
+
+function makeTournamentLink(tournament) {
+    return `<a href="#" data-tournament-id="${tournament.id}">${tournament.name}</a>`;
+}
 
 function processData(data) {
     if (data.length) {
