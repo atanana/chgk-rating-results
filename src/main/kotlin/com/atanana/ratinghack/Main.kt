@@ -23,13 +23,14 @@ fun Application.module() {
             call.respondText(info, ContentType.Application.Json)
         }
 
-        get("/test") {
+        get("/") {
             val json = InterestingTournamentsProvider.getInterestingTournamentsJson()
-            call.respondText(json.toJsonString(), ContentType.Application.Json)
+            val page = javaClass.getResource("/web/index.html").readText()
+            val resultPage = page.replaceFirst("%tournaments_data%", json.toJsonString())
+            call.respondText(resultPage, ContentType.Text.Html)
         }
 
         static {
-            defaultResource("index.html", "web")
             resources("web")
         }
     }
