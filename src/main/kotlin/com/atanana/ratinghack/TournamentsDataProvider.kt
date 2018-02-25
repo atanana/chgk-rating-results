@@ -24,7 +24,8 @@ object TournamentsDataProvider {
                 cache
             } else {
                 cacheTimestamp = LocalDate.now()
-                getTournamentsFromServer()
+                cache = getTournamentsFromServer()
+                cache
             }
         }
     }
@@ -48,7 +49,7 @@ object TournamentsDataProvider {
         return ((parser.parse(StringBuilder(data)) as JsonObject)["items"] as JsonArray<*>)
                 .mapChildren { it.toTournamentData() }
                 .filterNotNull()
-                .filter { it.type == "Синхрон"}
+                .filter { it.type == "Синхрон" }
                 .toList()
     }
 }
