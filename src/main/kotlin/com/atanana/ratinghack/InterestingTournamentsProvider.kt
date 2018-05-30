@@ -8,7 +8,7 @@ object InterestingTournamentsProvider {
     fun getInterestingTournamentsJson(): JsonArray<JsonObject> {
         val now = LocalDateTime.now()
         val tournaments = TournamentsDataProvider.getTournaments()
-                .filter { it.start.isBefore(now) && it.end.isAfter(now) }
+                .filter { it.start.isBefore(now) && it.end.plusHours(4).isAfter(now) }
 
         return JsonArray(tournaments.map { tournamentToJson(it) })
     }
