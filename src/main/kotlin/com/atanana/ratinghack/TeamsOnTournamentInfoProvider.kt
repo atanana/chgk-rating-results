@@ -2,15 +2,17 @@ package com.atanana.ratinghack
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.Klaxon
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 object TeamsOnTournamentInfoProvider {
     private val klaxon = Klaxon()
 
-    suspend fun getInfo(tournamentId: Int): String {
+    suspend fun getInfo(tournamentId: Int): String = coroutineScope {
         val teamsJson = getTeamIds(tournamentId)
                 .map { team ->
-                    async {
+                    async(Dispatchers.IO) {
                         TeamDataProvider.getTeamData(team.teamId.toInt(), tournamentId)
                     }
                 }
@@ -18,7 +20,7 @@ object TeamsOnTournamentInfoProvider {
                 .sortedWith(compareBy({ it.teamResult.place }, { it.teamInfo.name }))
                 .map { it.toJson() }
 
-        return JsonArray(teamsJson).toJsonString()
+        JsonArray(teamsJson).toJsonString()
     }
 
     private fun getTeamIds(tournamentId: Int): List<RawTournamentTeam> {
