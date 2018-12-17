@@ -23,6 +23,12 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 mainClassName = "io.ktor.server.netty.EngineMain"
 
+shadowJar {
+    baseName = 'rating-hack'
+    classifier = null
+    version = null
+}
+
 repositories {
     mavenCentral()
     jcenter()
