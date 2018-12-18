@@ -11,11 +11,13 @@ getResultsBtn.onclick = () => {
     getResultsBtn.classList.add('is-loading');
     errorNotification.classList.add('is-hidden');
     isLoading = true;
+    updateFavicon();
     axios.get('/tournament/' + tournamentInput.value)
         .then((response) => processData(response.data))
         .catch(() => errorNotification.classList.remove('is-hidden'))
         .finally(() => {
             isLoading = false;
+            updateFavicon();
             getResultsBtn.classList.remove('is-loading');
         });
 };
@@ -65,4 +67,27 @@ function makeTeamRow(team) {
         <td>${team.points}</td>
     </tr>
     `;
+}
+
+function updateFavicon() {
+    if (isLoading) {
+        changeFavicon('loading.7ac8eff2.png');
+    } else {
+        changeFavicon('favicon.8870348a.ico');
+    }
+}
+
+function changeFavicon(src) {
+    let link = document.createElement('link');
+    let oldLink = document.getElementById('favicon-link');
+
+    link.id = 'favicon-link';
+    link.rel = 'shortcut icon';
+    link.href = src;
+
+    if (oldLink) {
+        document.head.removeChild(oldLink);
+    }
+
+    document.head.appendChild(link);
 }
