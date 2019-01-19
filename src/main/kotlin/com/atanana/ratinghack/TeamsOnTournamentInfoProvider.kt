@@ -2,7 +2,6 @@ package com.atanana.ratinghack
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.Klaxon
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 
@@ -12,7 +11,7 @@ object TeamsOnTournamentInfoProvider {
     suspend fun getInfo(tournamentId: Int): String = coroutineScope {
         val teamsJson = getTeamIds(tournamentId)
                 .map { team ->
-                    async(Dispatchers.IO) {
+                    async {
                         TeamDataProvider.getTeamData(team.teamId.toInt(), tournamentId)
                     }
                 }
