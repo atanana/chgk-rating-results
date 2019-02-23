@@ -3,7 +3,7 @@ package com.atanana.ratinghack
 import java.net.URL
 import java.nio.charset.Charset
 
-const val SITE_ADDRESS = "http://rating.chgk.info/"
+const val SITE_ADDRESS = "https://rating.chgk.info/"
 
 object Connector {
     private val RATING_CHARSET = Charset.forName("cp1251")
